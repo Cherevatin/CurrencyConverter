@@ -1,48 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CurrencyConverter
 {
     internal class CurrencyExchanger
     {
-        private List<Currency> currencies = new List<Currency>();
+        public List<string> ListISO
+        {
+            get;
+            private set;
+        }
 
-        public List<Currency> Currencies { get; set; }
+        public List<Currency> Currencies {
+            get;
+            private set; 
+        }
         public CurrencyExchanger()
         {
-            AddNewCurrency("USD", 26.71);
-            AddNewCurrency("EUR", 31.45);
-            MainMenu();
-        }
+            Currencies = new List<Currency>();
+            
+            Currencies.Add(CreateCurrency("USD", 26.71));
+            Currencies.Add(CreateCurrency("EUR", 31.45));
 
-        public void AddNewCurrency()
-        {
-            Console.Clear();
-            Console.Write("Enter currency code:");
-            string iso = Console.ReadLine();
-            Console.Write("Enter exchange rate:");
-            double exchangeRate = Convert.ToDouble(Console.ReadLine());
-            var currency = new Currency(iso, exchangeRate);
-            Currencies.Add(currency);
-            Console.WriteLine("\nNew currency has been added:");
-            currency.Print();
-            Console.WriteLine("\nPress Backspace to back to the main menu\n");
-            while (Console.ReadKey().Key != ConsoleKey.Backspace) { }
-            MainMenu();
-
-        }
-        public void AddNewCurrency(string ISO, double ExchangeRate)
-        {
-            var currency = new Currency(ISO, ExchangeRate);
-            Currencies.Add(currency);
+            ListISO = new List<string>()
+            {
+                "USD",
+                "EUR",
+                "RUB",
+                "UAH",
+                "GBP",
+                "JPY",
+                "CHF",
+                "CNY"
+            };
         }
 
         public void PrintCurrencies()
         {
-            foreach (var currency in currencies)
+            foreach (var currency in Currencies)
             {
                 Console.WriteLine("{0}. {1} {2}", Currencies.IndexOf(currency) + 1, currency.ISO, currency.ExchangeRate);
             }
@@ -56,10 +51,10 @@ namespace CurrencyConverter
                 try
                 {
                     int select = Convert.ToInt32(Console.ReadLine());
-                    if (select > 0 && select < Currencies.Capacity)
+                    if (select > 0 && select <=Currencies.Count)
                     {
                         Console.WriteLine(selectionType + " currency selected: ");
-                        Currencies[select - 1].Print();
+                        Console.WriteLine(Currencies[select - 1].ISO + " " + Currencies[select - 1].ExchangeRate);
                         return select - 1;
                     }
                 }
@@ -70,31 +65,14 @@ namespace CurrencyConverter
             }
         }
 
-        public void MainMenu()
+        public Currency CreateCurrency(string ISO, double ExchangeRate)
         {
-            Console.Clear();
-            Console.WriteLine("Available currencies\n");
-            PrintCurrencies();
+            return new Currency(ISO, ExchangeRate);
+        }
 
-            Console.WriteLine("\n1. Exchange the currency\n2. Add new currency\n3. Exit");
-
-            while (true)
-            {
-                switch (Console.ReadKey().Key)
-                {
-                    case ConsoleKey.D1:
-                        _ = new CurrencyExchange(this);
-                        break;
-                    case ConsoleKey.D2:
-                        AddNewCurrency();
-                        break;
-                    case ConsoleKey.D3:
-                        return;
-                    default:
-                        Console.WriteLine("Unknown choice");
-                        break;
-                }
-            }
+        public void AddCurrency(Currency currency)
+        {
+            Currencies.Add(currency);
         }
     }
 }

@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CurrencyConverter
+﻿namespace CurrencyConverter
 {
     internal class Currency
     {
-        public string ISO { get; set; }
-        public double ExchangeRate { get; set; }
-        public Currency(string ISO, double ExchangeRate)
+        public string ISO { get; private set; }
+
+        public double ExchangeRate { get; private set; }
+
+        public Currency(string iso, double exchangeRate)
         {
-            this.ISO = ISO;
-            this.ExchangeRate = ExchangeRate;
-        }
-        public void Print()
-        {
-            Console.WriteLine("{0} {1}", ISO, ExchangeRate);
+            ISO = iso;
+            ExchangeRate = exchangeRate;
         }
     }
 }
